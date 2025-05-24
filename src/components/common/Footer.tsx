@@ -7,11 +7,27 @@ import Image from 'next/image';
 import Button from '@/components/ui/Button';
 
 const Footer: React.FC = () => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [email, setEmail] = React.useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle newsletter subscription
-    alert('Thank you for subscribing to our newsletter!');
+console.log('API Key:', process.env.RESEND_API_KEY);
+
+    const res = await fetch('/api/send_newsletter', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }), // Use input value
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert(data.message); // 'Email sent!'
+    } else {
+      alert(data.error || 'Something went wrong');
+    }
   };
+
+
 
   return (
     <footer className="bg-gray-900 text-white py-16">
@@ -89,7 +105,7 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-base font-semibold mb-4">Get Email Notifications</h3>
             <p className="text-gray-500 mb-4">
-              Generate outside the box thinking with the possibility to targtet the low
+              Subscribe to our newsletter for updates.
             </p>
             <form onSubmit={handleSubmit} className="flex">
               <input
@@ -97,6 +113,8 @@ const Footer: React.FC = () => {
                 placeholder="Enter email...."
                 className="bg-dark-800 border border-dark-700 text-gray-500 py-3 px-4 rounded-l-sm w-full focus:outline-none"
                 required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
               />
               <Button 
                 type="submit" 
