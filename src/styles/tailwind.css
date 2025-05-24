@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary Colors */
+    --primary-background: #2b63d9;
+    --primary-foreground: #ffffff;
+    --primary-light: #437ef7;
+    --primary-dark: #1e4bb8;
+
+    /* Secondary Colors */
+    --secondary-background: #ffffff;
+    --secondary-foreground: #272d37;
+    --secondary-light: #f8f9fb;
+    --secondary-dark: #5f6d7e;
+
+    /* Accent Colors */
+    --accent-color: #437ef7;
+    --accent-foreground: #ffffff;
+    --accent-light: #b1ccfa;
+    --accent-dark: #151b27;
+
+    /* Border Colors */
+    --border-primary: #dae0e6;
+    --border-secondary: #648ef7;
+    --border-light: #e0e0e0;
+    --border-dark: #2e3445;
+  }
+}
+
+@layer utilities {
+  /* Background Color Utilities */
+  .bg-primary {
+    background-color: var(--primary-background);
+  }
+
+  .bg-primary-light {
+    background-color: var(--primary-light);
+  }
+
+  .bg-primary-dark {
+    background-color: var(--primary-dark);
+  }
+
+  .bg-secondary {
+    background-color: var(--secondary-background);
+  }
+
+  .bg-secondary-light {
+    background-color: var(--secondary-light);
+  }
+
+  .bg-secondary-dark {
+    background-color: var(--secondary-dark);
+  }
+
+  .bg-accent {
+    background-color: var(--accent-color);
+  }
+
+  .bg-accent-light {
+    background-color: var(--accent-light);
+  }
+
+  .bg-accent-dark {
+    background-color: var(--accent-dark);
+  }
+
+  /* Text Color Utilities */
+  .text-primary {
+    color: var(--primary-background);
+  }
+
+  .text-primary-foreground {
+    color: var(--primary-foreground);
+  }
+
+  .text-secondary-foreground {
+    color: var(--secondary-foreground);
+  }
+
+  .text-secondary-dark {
+    color: var(--secondary-dark);
+  }
+
+  .text-accent {
+    color: var(--accent-color);
+  }
+
+  .text-accent-light {
+    color: var(--accent-light);
+  }
+
+  .text-accent-dark {
+    color: var(--accent-dark);
+  }
+
+  /* Border Color Utilities */
+  .border-primary {
+    border-color: var(--border-primary);
+  }
+
+  .border-secondary {
+    border-color: var(--border-secondary);
+  }
+
+  .border-light {
+    border-color: var(--border-light);
+  }
+
+  .border-dark {
+    border-color: var(--border-dark);
+  }
+}
