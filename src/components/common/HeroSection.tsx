@@ -56,7 +56,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 <p className="text-sm font-medium mb-4">{supportingText}</p>
                 <div className="flex flex-wrap gap-6">
                   {supportingLogos.map((logo, index) => (
-                    <Image 
+                    <Image
                       key={index}
                       src={logo}
                       alt="Partner Logo"

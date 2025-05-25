@@ -8,25 +8,70 @@ import Button from '@/components/ui/Button';
 
 const Footer: React.FC = () => {
   const [email, setEmail] = React.useState('');
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-console.log('API Key:', process.env.RESEND_API_KEY);
+  const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    const res = await fetch('/api/send_newsletter', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }), // Use input value
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      alert(data.message); // 'Email sent!'
-    } else {
-      alert(data.error || 'Something went wrong');
-    }
+  const url = '/api/send_newsletter';
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      type: 'transactional',
+      to: email,
+      subject: 'Welcome to Our Newsletter!',
+      htmlContent: `
+        <html>
+          <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <h1 style="color: #333; margin-bottom: 10px;">Welcome to Lookscout!</h1>
+              <p style="color: #666; font-size: 16px;">Thank you for subscribing to our newsletter.</p>
+            </div>
+            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h2 style="color: #333; margin-bottom: 15px;">What to Expect:</h2>
+              <ul style="color: #666; line-height: 1.6;">
+                <li>Weekly updates on new features and improvements</li>
+                <li>Exclusive tips and best practices</li>
+                <li>Early access to new products and services</li>
+                <li>Special offers and promotions</li>
+              </ul>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+              <p style="color: #666; font-size: 14px;">
+                You're receiving this email because you subscribed to our newsletter at ${new Date().toLocaleDateString()}.
+              </p>
+              <p style="color: #999; font-size: 12px; margin-top: 15px;">
+                If you didn't subscribe or want to unsubscribe, please contact us.
+              </p>
+            </div>
+          </body>
+        </html>
+      `,
+      sender: {
+        name: "Lookscout Team",
+        email: "smabhigna378@gmail.com"
+      }
+    })
   };
 
+  fetch(url, options)
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert('Thank you for subscribing! Please check your email for confirmation.');
+        setEmail('');
+      } else {
+        alert(data.error || 'Something went wrong. Please try again.');
+      }
+    })
+    .catch(err => {
+      console.error('Newsletter subscription error:', err);
+      alert('Network error. Please check your connection and try again.');
+    })
+    .finally(() => setIsSubmitting(false));
+};
 
 
   return (
@@ -43,7 +88,7 @@ console.log('API Key:', process.env.RESEND_API_KEY);
               className="mb-4"
             />
             <p className="text-gray-500 mb-6">
-              Generate outside the box thinking with the possibility to targtet the low.
+              Generate outside the box thinking with the possibility to target the low.
             </p>
           </div>
 
@@ -111,16 +156,18 @@ console.log('API Key:', process.env.RESEND_API_KEY);
               <input
                 type="email"
                 placeholder="Enter email...."
-                className="bg-dark-800 border border-dark-700 text-gray-500 py-3 px-4 rounded-l-sm w-full focus:outline-none"
+                className="bg-dark-800 border border-dark-700 text-gray-500 py-3 px-4 rounded-l-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
+                disabled={isSubmitting}
               />
               <Button 
                 type="submit" 
-                className="bg-blue-500 text-white font-semibold py-3 px-4 rounded-r-sm"
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-r-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isSubmitting}
               >
-                Submit
+                {isSubmitting ? 'Subscribing...' : 'Submit'}
               </Button>
             </form>
           </div>
